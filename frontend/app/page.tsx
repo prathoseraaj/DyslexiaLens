@@ -1,9 +1,12 @@
+"use client"
 import Image from "next/image";
 import React, { useState } from "react";
 
 const page = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+
+  console.log(text) //for understanding
 
   return (
     <div className="w-full h-[100vh] m-0 p-0">
@@ -33,6 +36,8 @@ const page = () => {
             <textarea
               className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh] p-3"
               placeholder="Enter the text Here"
+              value={text}
+              onChange={(e)=>setText(e.target.value)}
             />
           </div>
 
