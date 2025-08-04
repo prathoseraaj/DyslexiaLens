@@ -27,7 +27,7 @@ const page = () => {
           </p>
 
           <div className="mt-15">
-            <textarea className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh]" />
+            <textarea className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh] p-3" placeholder="Enter the text Here" />
           </div>
         </div>
       </div>
