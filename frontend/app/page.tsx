@@ -1,12 +1,29 @@
-"use client"
+"use client";
+import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
 
 const page = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState("");
 
-  console.log(text) //for understanding
+  console.log(text); //for understanding
+
+  const handleSimply = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:8000/simplif", {
+        text,
+      });
+      setResult(response.data);
+    } catch (error) {
+      console.error(error);
+      setResult("Error simplifying text");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full h-[100vh] m-0 p-0">
@@ -37,11 +54,15 @@ const page = () => {
               className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh] p-3"
               placeholder="Enter the text Here"
               value={text}
-              onChange={(e)=>setText(e.target.value)}
+              onChange={(e) => setText(e.target.value)}
             />
           </div>
 
-          <button className="bg-green-600 mt-4 px-3 py-1 rounded text-white">
+          <button
+            className="bg-green-600 mt-4 px-3 py-1 rounded text-white"
+            onClick={handleSimply}
+            disabled={loading}
+          >
             Simplify Text
           </button>
         </div>
