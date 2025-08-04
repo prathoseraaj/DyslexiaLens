@@ -2,9 +2,8 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 const page = () => {
-
-  const [text,setText] = useState("");
-  const [loading,setLoading] = useState(false);
+  const [text, setText] = useState("");
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="w-full h-[100vh] m-0 p-0">
@@ -29,12 +28,17 @@ const page = () => {
           <p className="text-[12px] ">
             Paste or types your text below to simplify it for easier reading.
           </p>
-    
+
           <div className="mt-15">
-            <textarea className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh] p-3" placeholder="Enter the text Here" />
+            <textarea
+              className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh] p-3"
+              placeholder="Enter the text Here"
+            />
           </div>
 
-          <button className="bg-green-600 mt-4 px-3 py-1 rounded text-white">Simplify Text</button>
+          <button className="bg-green-600 mt-4 px-3 py-1 rounded text-white">
+            Simplify Text
+          </button>
         </div>
       </div>
     </div>
