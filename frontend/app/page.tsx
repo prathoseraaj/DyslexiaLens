@@ -1,7 +1,11 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const page = () => {
+
+  const [text,setText] = useState("");
+  const [loading,setLoading] = useState(false);
+
   return (
     <div className="w-full h-[100vh] m-0 p-0">
       <nav className="h-[7vh] flex  items-center ml-2">
