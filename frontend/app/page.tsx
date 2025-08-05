@@ -60,7 +60,7 @@ const page = () => {
             </div>
 
             <button
-              className="bg-green-600 mt-4 px-3 py-1 rounded text-white"
+              className="bg-green-600 mt-4 px-3 py-1 rounded text-white cursor-pointer"
               onClick={handleSimply}
               disabled={loading}
             >
@@ -69,7 +69,6 @@ const page = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center m-10 mt-10 mb-10 max-w-4xl mx-auto">
-            
             <div className="w-full max-w-3xl bg-yellow-50 border-2 border-yellow-200 rounded-xl p-8 shadow-lg">
               <h3 className="text-xl font-bold text-gray-800 mb-6 text-center">
                 Simplified Text
@@ -93,7 +92,7 @@ const page = () => {
 
             <div className="mt-8">
               <button
-                className="bg-green-500 px-3 font-bold py-1 rounded-lg text-white text-lg hover:bg-green-700"
+                className="bg-green-600 mt-4 px-3 py-1 rounded text-white cursor-pointer"
                 onClick={() => {
                   setText("");
                   setResult("");
