@@ -91,10 +91,9 @@ const page = () => {
               </div>
             </div>
 
-            {/* Action button */}
             <div className="mt-8">
               <button
-                className="bg-green-600 px-8 py-3 rounded-lg text-white text-lg font-medium hover:bg-green-700"
+                className="bg-green-500 px-3 font-bold py-1 rounded-lg text-white text-lg hover:bg-green-700"
                 onClick={() => {
                   setText("");
                   setResult("");
