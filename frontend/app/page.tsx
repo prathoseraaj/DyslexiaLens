@@ -102,7 +102,7 @@ const page = () => {
               </button>
             </div>
 
-            <div className="w-full max-w-3xl mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <div className="w-full max-w-3xl mt-8  mb-10 bg-blue-50 border border-blue-200 rounded-lg p-6">
               <h3 className="text-lg font-bold text-blue-800 mb-3">
                 Reading Tips
               </h3>
