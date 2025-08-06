@@ -25,6 +25,19 @@ const page = () => {
     }
   };
 
+const LoadingSpinner = () => (
+    <div className="flex items-center justify-center min-h-[50vh]">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-gray-300 border-t-green-600 rounded-full animate-spin mx-auto mb-4"></div>
+        
+        <p className="text-lg text-gray-700">
+          Wait a minute, it is undergoing the simplification process...
+        </p>
+      </div>
+    </div>
+  );
+
+
   return (
     <div className="w-full h-[100vh] m-0 p-0">
       <nav className="h-[7vh] flex  items-center ml-2">
@@ -41,7 +54,9 @@ const page = () => {
       <hr className="text-gray-300" />
 
       <div className="h-[93h]">
-        {!result ? (
+        {loading ? (
+          <LoadingSpinner />
+        ) : !result ? (
           <div className="flex items-center m-10 mt-20 flex-col gap-1">
             <h1 className="font-bold text-4xl font-serif">
               DyslexiaLens - Text Simplifier
@@ -60,11 +75,11 @@ const page = () => {
             </div>
 
             <button
-              className="bg-green-600 mt-4 px-3 py-1 rounded text-white cursor-pointer"
+              className="bg-green-600 mt-4 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleSimply}
-              disabled={loading}
+              disabled={loading || !text.trim()}
             >
-              Simplify Text
+              {loading ? "Simplifying..." : "Simplify Text"}
             </button>
           </div>
         ) : (
@@ -92,7 +107,7 @@ const page = () => {
 
             <div className="mt-8">
               <button
-                className="bg-green-600 mt-4 px-3 py-1 rounded text-white cursor-pointer"
+                className="bg-green-600 mt-4 px-3 py-1 rounded text-white cursor-pointer hover:bg-green-700 transition-colors"
                 onClick={() => {
                   setText("");
                   setResult("");
