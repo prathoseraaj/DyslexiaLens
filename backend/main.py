@@ -30,7 +30,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["http://localhost:3001"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -512,20 +512,23 @@ def gemini_process(text, full_result):
     prompt = f"""
     You are an expert at creating dyslexia-friendly text.
 
-    Here is the original text:
+    ORIGINAL TEXT (source of all meaning):
     {text}
 
-    Here is an incomplete simplified version with the readabilty score:
+    SIMPLIFIED DRAFT (style only, may be missing details):
     {full_result}
 
-    Instructions:
-    - Use both the original and the simplified version to create a single, complete, easy-to-read paragraph suitable for someone with dyslexia.
-    - Make sure the meaning of the original is preserved, but use short sentences, simple words, and clear structure.
-    - Fill in any missing parts or incomplete ideas from the simplified version using the original text for context.
-    - The final result should be one clear, readable paragraph in plain language, suitable for dyslexic readers.
+    Rewrite the ORIGINAL TEXT into a dyslexia-friendly format while:
+    - Keeping EVERY fact, detail, and nuance from the ORIGINAL TEXT.
+    - Using the SIMPLIFIED DRAFT only as a style/formatting guide — do NOT drop or shorten ideas from the original.
+    - Using short sentences and simple words, but keeping all original meaning.
+    - Preserving the same paragraph count and logical flow as the original.
+    - Breaking up sentences longer than 20 words.
+    - Avoiding any loss of meaning or important details from the original.
 
-    Return only the completed simplified paragraph.
+    Return ONLY the final dyslexia-friendly text with no explanation.
     """
+
 
     response = model.generate_content(prompt)
     return response.text
