@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import ftfy
@@ -9,6 +9,10 @@ import textstat
 import google.generativeai as genai
 import os
 from dotenv import load_dotenv
+import pytesseract
+from PIL import Image
+import pdfplumber
+import io
 
 load_dotenv()
 gemini_api_key = os.getenv("gemini_api_key")
@@ -38,6 +42,20 @@ app.add_middleware(
 
 class TextRequest(BaseModel):
     text: str
+
+def extract_text_from_pdf(pdf_bytes):
+    text = ""
+    with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+        for page in pdf.pages:
+            page_text = page.extract_text()
+            if page_text:
+                text += page_text + "\n"
+    return text.strip()
+
+def extract_text_from_image(image_bytes):
+    image = Image.open(io.BytesIO(image_bytes))
+    text = pytesseract.image_to_string(image)
+    return text.strip()
 
 UNIVERSAL_REPLACEMENTS = {
     "subsequently": "later",
@@ -529,7 +547,6 @@ def gemini_process(text, full_result):
     Return ONLY the final dyslexia-friendly text with no explanation.
     """
 
-
     response = model.generate_content(prompt)
     return response.text
 
@@ -571,6 +588,26 @@ Meaning preservation: {similarity:.2f}
         final_simplified_text = gemini_process(text, full_result)
         
         return final_simplified_text
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        
+        if file.content_type == "application/pdf":
+            text = extract_text_from_pdf(contents)
+        elif file.content_type in ["image/png", "image/jpeg", "image/jpg"]:
+            text = extract_text_from_image(contents)
+        else:
+            raise HTTPException(status_code=400, detail="Unsupported file type")
+        
+        if not text.strip():
+            raise HTTPException(status_code=400, detail="No text could be extracted from the file")
+        
+        return {"text": text}
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
