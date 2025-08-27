@@ -7,8 +7,37 @@ const page = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  console.log(text); //for understanding
+  console.log(text);
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+    const file = files[0];
+    if (!file) return;
+
+    setUploadedFile(file);
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await axios.post("http://localhost:8000/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setText(response.data.text);
+    } catch (error) {
+      console.error(error);
+      setText("Error extracting text from file");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSimply = async () => {
     setLoading(true);
@@ -66,9 +95,21 @@ const LoadingSpinner = () => (
             </p>
 
             <div className="mt-15">
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Upload PDF or Image (PNG, JPG, JPEG)
+                </label>
+                <input
+                  type="file"
+                  accept=".pdf,.png,.jpg,.jpeg"
+                  onChange={handleFileUpload}
+                  className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+                />
+              </div>
+              
               <textarea
                 className="border border-gray-300 outline-0 resize-none rounded-[10px] w-[500px] h-[40vh] p-3"
-                placeholder="Enter the text Here"
+                placeholder="Enter the text Here or upload a PDF/Image file"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
               />
@@ -111,6 +152,7 @@ const LoadingSpinner = () => (
                 onClick={() => {
                   setText("");
                   setResult("");
+                  setUploadedFile(null);
                 }}
               >
                 Simplify Another Text
